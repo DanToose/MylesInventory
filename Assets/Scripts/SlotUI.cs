@@ -14,6 +14,12 @@ public class SlotUI : MonoBehaviour
     public void SetItem(InventoryItem item)
     {
         this.g_item = item;
+        if(this.g_item == null)
+        {
+            ClearItem();
+            return;
+        }
+
         this.g_text.text = this.g_item.name; //Sets the text field to this item's name
         this.g_icon.sprite = item.Sprite;
         this.g_button.interactable = true;

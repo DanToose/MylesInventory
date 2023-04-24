@@ -7,7 +7,6 @@ public class Inventory : MonoBehaviour
 
     public Transform g_inventoryPanel;  // Reference to InventoryUI graphic (panel)
     public List<SlotUI> g_slots = new List<SlotUI>();
-    public List<SlotUI> c_slots = new List<SlotUI>();
 
     void Awake()
     {
@@ -35,35 +34,12 @@ public class Inventory : MonoBehaviour
     public void RemoveItem(int itemToDrop)
     {
         Items.Remove(Items[itemToDrop]);
-        g_slots[itemToDrop].ClearItem();
-        RefreshUISlots();
-        
-        // This successfully removes the item from the ITEMS LIST in Inventory.
-        // Now how to refresh the UI?
-    }
+        g_slots[itemToDrop].ClearItem(); //-- This was working at clearing a slot, but not removing it.
 
-    public void RefreshUISlots()
-    {
-        c_slots = new List<SlotUI>();
-
-        foreach (SlotUI gslot in g_slots)
+        for (int i = itemToDrop; i < g_slots.Count - 1; i++) // This goes through the g_slots from the item dropped, and copies the next item 'down'
         {
-            if (gslot.g_item != null)
-            {
-                c_slots.Add(gslot);
-            }
-            g_slots.Remove(gslot);
-
+            g_slots[i].SetItem(g_slots[i + 1].Item);
         }
-
-        g_slots = new List<SlotUI>();
-
-        foreach (SlotUI cslot in c_slots)
-        {
-            g_slots.Add(cslot);
-        }
-
-
 
     }
 
